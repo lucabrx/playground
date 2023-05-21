@@ -52,7 +52,6 @@ export type VerificationToken = {
 
 export type Post = {
   id: string;
-  title: string;
   content: string;
   userId: string | null;
   createdAt: ColumnType<Date | null, Date | string, Date | string>;
