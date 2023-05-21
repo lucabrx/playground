@@ -14,6 +14,7 @@ import {
             id: nanoid(),
             createdAt: new Date(),
             updatedAt: new Date(),
+            role: "user",
             ...data })
         .executeTakeFirstOrThrow()
         .then(async () => {
