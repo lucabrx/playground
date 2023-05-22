@@ -1,5 +1,4 @@
 import './globals.css'
-import Proivders from '@/components/Proivders'
 
 export const metadata = {
   title: 'Create Next App',
@@ -13,11 +12,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Proivders>
       <body>
         {children}
       </body>
-      </Proivders>
     </html>
   )
 }
