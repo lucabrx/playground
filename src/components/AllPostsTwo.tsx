@@ -30,7 +30,7 @@ const getKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
 return (
 <div className='p-2 bg-slate-900 text-slate-100 rounded-md mx-2 mt-2'>
 <p>{totalPosts} users listed</p>
-    {data.map((users, index) => {
+    {data.map((users) => {
       // `data` is an array of each page's API response.
       return users.map((post: SafePost) => <div key={post.id}>{post.content}</div>)
     })}

@@ -13,6 +13,10 @@ const server = z.object({
   DATABASE_URL: z.string(),
   GITHUB_CLIENT_ID: z.string(),
   GITHUB_CLIENT_SECRET: z.string(),
+  AWS_ACCESS_KEY_ID: z.string(),
+  AWS_SECRET_KEY_ID: z.string(),
+  AWS_REGION: z.string(),
+  AWS_BUCKET_NAME: z.string(),
 });
 
 /**
@@ -36,6 +40,10 @@ const processEnv = {
   DATABASE_URL: process.env.DATABASE_URL,
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+  AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+  AWS_SECRET_KEY_ID: process.env.AWS_SECRET_KEY_ID,
+  AWS_REGION: process.env.AWS_REGION,
+  AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME,
 };
 
 // Don't touch the part below

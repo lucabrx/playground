@@ -7,11 +7,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 export async function GET(request: NextRequest) {
-
+    const url3 = new URL(request.url).searchParams.get("fileType")
+    console.log(url3)
     const url = new URL(request.nextUrl).searchParams.get("page")
     const url2= new URL(request.nextUrl).searchParams.get("limit")
-    console.log(url)
-    console.log(url2)
+  
     const posts = await db
     .selectFrom("Post")
     .innerJoin("User", "User.id", "Post.userId")
