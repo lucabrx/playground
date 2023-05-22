@@ -4,34 +4,28 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { NewPostSchema, NewPostType } from '@/schema/post.schema';
 import axios from 'axios';
-import  useSWRMutation from "swr/mutation"
+import { useMutation } from '@tanstack/react-query';
 interface PostFormProps {
   session : SafeUser | null;
 }
 
+const PostForm: FC<PostFormProps> = ({session}) => {
 
-
-
-
-const PostForm: FC<PostFormProps> = ({}) => {
-  async function updateUser(url: string, { arg } : {arg : NewPostType }) {
-    await axios.post(url, arg )
-  }
     // react hook form
     const {handleSubmit,register,reset} = useForm<NewPostType>({
         resolver: zodResolver(NewPostSchema),
     })
 
 
-    // swr mutation hook
-    const { trigger } = useSWRMutation("/api/posts/new",updateUser)
-   
+    // react mutation hook
+    const {mutate} = useMutation({
+     mutationFn: async (data: NewPostType) => (await axios.post('/api/posts/new',data))
+
+    })
   
     // submit handler
     const onSubmit = (data: NewPostType) => {
-        trigger({
-            content: data.content,  
-        })
+        mutate(data)
         reset()
         console.log(data)
     }

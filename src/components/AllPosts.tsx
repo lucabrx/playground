@@ -1,5 +1,5 @@
 "use client"
-import {usePosts} from '@/hooks/usePosts';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { type FC } from 'react';
 
@@ -7,10 +7,13 @@ interface AllPostsProps {
   
 }
 
-
+    async function fetchPosts() {
+        const res = await axios.get('/api/posts')
+        return res.data
+    }
 const AllPosts: FC<AllPostsProps> = ({}) => {
-   
-    const { posts } = usePosts()
+    
+    const {data: posts} = useQuery(["post"], fetchPosts)
    
 
 return (

@@ -7,16 +7,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 export async function GET(request: NextRequest) {
-    const url3 = new URL(request.url).searchParams.get("fileType")
-    console.log(url3)
-    const url = new URL(request.nextUrl).searchParams.get("page")
-    const url2= new URL(request.nextUrl).searchParams.get("limit")
+  
+   // const url = new URL(request.nextUrl).searchParams.get("page")
+   // const url2= new URL(request.nextUrl).searchParams.get("limit")
   
     const posts = await db
     .selectFrom("Post")
     .innerJoin("User", "User.id", "Post.userId")
-    .limit(Number(url2))
-    .offset(Number(url))
+   // .limit(Number(url2))
+   // .offset(Number(url))
     .select("Post.id")
     .select("Post.content")
     .select("Post.createdAt")
