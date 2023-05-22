@@ -1,42 +1,62 @@
 "use client"
-import {usePosts} from '@/hooks/usePosts';
-import fetcher from '@/lib/fetcher';
 import axios from 'axios';
-import { type FC } from 'react';
-import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite';
+import React, { type FC } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query'
 
+export interface IInfinitePage {
+  nextCursor: number | undefined;
+  page: {
+    post: SafePost;
+    hasMore: boolean;
+  };
+}
 
+async function fetchPaginatedData(pageParam = 0) {
+  const pageSize = 10; // Replace with your desired page size
+  const offset = pageSize * pageParam;
+  const apiUrl = `/api/posts?page=${offset}&limit=${pageSize}`;
 
+  try {
+    const response = await axios.get(apiUrl);
+    return response.data;
+  } catch (error) {
+    throw new Error('Error fetching paginated data');
+  }
+}
 
 const AllPostsTwo: FC = ({}) => {
 
-const getKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
-    if (previousPageData && !previousPageData.length) return null // reached the end
-    return `/api/posts/?page=${pageIndex}&limit=10`                  
-}
-
-     const { data, size, setSize } = useSWRInfinite(getKey, fetcher)
-    if(!data) return <div>loading...</div>
-
-    let totalPosts = 0
-    for (let i = 0; i < data.length; i++) {
-      totalPosts += data[i].length
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery(
+    ['paginatedData'],
+    ({ pageParam }) => fetchPaginatedData(pageParam),
+    {
+      getNextPageParam: (lastPage) => {
+        const nextPage = lastPage.length === 10 ? lastPage.length : null; // Assuming 10 items per page
+        return nextPage;
+      },
     }
-   
-    console.log(data)
-  
-   
+  );
+ 
+  console.log(data)
 
-return (
-<div className='p-2 bg-slate-900 text-slate-100 rounded-md mx-2 mt-2'>
-<p>{totalPosts} users listed</p>
-    {data.map((users) => {
-      // `data` is an array of each page's API response.
-      return users.map((post: SafePost) => <div key={post.id}>{post.content}</div>)
-    })}
-    <button onClick={() => setSize(size + 1)}>Load More</button>
-</div>
-)
+  return (
+    <div>
+    {data?.pages.map((page, pageIndex) => (
+      <div key={pageIndex}>
+        {page.map((item: SafePost) => (
+          <div key={item.id}>{item.content}</div>
+        ))}
+      </div>
+ ))}
+      
+{hasNextPage && (
+        <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+          {isFetchingNextPage ? 'Loading more...' : 'Load More'}
+        </button>
+      )}
+  
+    </div>
+  )
 }
 
 export default AllPostsTwo
