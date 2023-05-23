@@ -8,11 +8,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
     //const url = new URL(request.nextUrl).searchParams.get("cursor")
-   const url2 = new URL(request.nextUrl).searchParams.get("limit")
+   const limit = new URL(request.nextUrl).searchParams.get("limit") // pagesize
+    const offset = new URL(request.nextUrl).searchParams.get("offset")
     const posts = await db
     .selectFrom("Post")
     .innerJoin("User", "User.id", "Post.userId")
-    .limit(Number(url2))
+    .offset(Number(offset))
+    .limit(Number(limit))
     .select("Post.id")
     .select("Post.content")
     .select("Post.createdAt")
