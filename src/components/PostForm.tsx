@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { NewPostSchema, NewPostType } from '@/schema/post.schema';
 import axios from 'axios';
+import {usePosts} from '@/hooks/usePosts';
+
 import  useSWRMutation from "swr/mutation"
 interface PostFormProps {
   session : SafeUser | null;
@@ -14,6 +16,7 @@ interface PostFormProps {
 
 
 const PostForm: FC<PostFormProps> = ({}) => {
+  const { mutate } = usePosts()
   async function updateUser(url: string, { arg } : {arg : NewPostType }) {
     await axios.post(url, arg )
   }
@@ -24,7 +27,8 @@ const PostForm: FC<PostFormProps> = ({}) => {
 
 
     // swr mutation hook
-    const { trigger } = useSWRMutation("/api/posts/new",updateUser)
+    const { trigger } = useSWRMutation("/api/posts/new",updateUser, {
+    })
    
   
     // submit handler
