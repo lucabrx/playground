@@ -7,10 +7,13 @@ import React, { type FC } from 'react';
 const API_URL = '/api/posts';
 
 const fetchBlogs = async ({ pageParam = 0 }) => {
+  const batchSize = 10;
+    const offsetValue = pageParam;
   const response = await axios.get<SafePost[]>(API_URL, {
+    
     params: {
-      offset: pageParam, 
-      limit: 10, 
+      offset: offsetValue, 
+      limit: batchSize, 
     },
   });
   return response.data;

@@ -8,8 +8,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
     //const url = new URL(request.nextUrl).searchParams.get("cursor")
-   const limit = new URL(request.nextUrl).searchParams.get("limit") // pagesize
-    const offset = new URL(request.nextUrl).searchParams.get("offset")
+   const limit = new URL(request.nextUrl).searchParams.get("limit") // batchSize
+    const offset = new URL(request.nextUrl).searchParams.get("offset") // offsetValue
     const posts = await db
     .selectFrom("Post")
     .innerJoin("User", "User.id", "Post.userId")

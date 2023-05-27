@@ -1,14 +1,13 @@
 import { type NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import { KyselyAdapter } from "./kyselyAdapter";
-import {env} from "@env"
 
 export const authOptions: NextAuthOptions = {
   adapter: KyselyAdapter,
   providers: [
     GithubProvider({
-    clientId: env.GITHUB_CLIENT_ID,
-    clientSecret: env.GITHUB_CLIENT_SECRET,
+    clientId: process.env.GITHUB_CLIENT_ID as string,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     }),
   ],
   session: {
